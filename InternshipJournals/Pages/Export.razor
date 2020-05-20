@@ -1,0 +1,71 @@
+﻿@page "/Export"
+
+    <div class="container-fluid px-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="title-1">Export</h2>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-3">
+                <label>Time Frame</label>
+                <select class="form-control" @onchange="filterChanged">
+                    <option value="0">Day</option>
+                    <option value="1">Week</option>
+                    <option value="4">2-Weeks</option>
+                    <option value="2">Month</option>
+                    <option value="3">All Time</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label>Search Date</label>
+                <input type="date" class="form-control" @bind="@searchDate" />
+            </div>
+            <div class="col-6">
+                <label class="w-100 float-right">&nbsp;</label>
+                <button class="au-btn au-btn-icon au-btn--blue float-right" @onclick="ExportPDF">
+                    Export
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <label>Current search from: <b>@searchTimeStart.ToString("MM/dd/yyyy")</b> - <b>@searchTimeEnd.ToString("MM/dd/yyyy")</b></label>
+            </div>
+        </div>
+        <div class="row py-1">
+            <div class="col-6">
+                <label>Your Name</label>
+                <input class="form-control" @onchange="NameChange" value="@curAccount.Name"/>
+            </div>
+            <div class="col-6">
+                <label>Company Name</label>
+                <input class="form-control" @onchange="CompanyChange" value="@curAccount.Company" />
+            </div>
+        </div>
+        <div class="card mb-5">
+            <div class="card-header">
+                <h3>Export</h3>
+            </div>
+            <div class="card-body" id="exportData">
+                <b style="color:black">Name:</b> @curAccount.Name <br />
+                <b style="color:black">Company:</b> @curAccount.Company <br />
+                <b style="color:black">Journal Date:</b> @DateTime.Now.ToString("MM/dd/yyyy") <br />
+                <b style="color:black">Journal Period: From </b> @searchTimeStart.ToString("MM/dd/yyyy") <b style="color:black"> To </b> @searchTimeEnd.ToString("MM/dd/yyyy") <br />
+                <b style="color:black">Total Hours Worked This Period:</b> @GetEntrieHours() <br /><br /><br />
+                @foreach (var s in entriesByDay.OrderBy(s => s.Key.Date))
+                {
+                    <h4><b>@s.Key.DayOfWeek.ToString(), @s.Key.ToString("MM/dd/yyyy") (@GetEntrieHours(s.Value) hours)</b></h4> <br />
+                    foreach (var e in s.Value.OrderBy(x => x.StartTime))
+                    {
+                        <span style="text-decoration: underline">@e.StartTime.ToString("hh:mm tt") - @e.EndTime.ToString("hh:mm tt")</span> <br />
+                        <p>
+                            @e.Details
+                        </p>
+                        <br />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+

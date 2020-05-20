@@ -1,0 +1,115 @@
+﻿@page "/Entry"
+
+<div class="container-fluid px-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="title-1">Entries</h2>
+        </div>
+    </div>
+    <div class="row pt-5">
+        <div class="col-3">
+            <label>Time Frame</label>
+            <select class="form-control" @onchange="filterChanged">
+                <option value="0">Day</option>
+                <option value="1">Week</option>
+                <option value="4">2-Weeks</option>
+                <option value="2">Month</option>
+                <option value="3">All Time</option>
+            </select>
+        </div>
+        <div class="col-3">
+            <label>Search Date</label>
+            <input type="date" class="form-control" @bind="@searchDate"/>
+        </div>
+        <div class="col-6">
+            <label class="w-100 float-right">&nbsp;</label>
+            <button class="au-btn au-btn-icon au-btn--blue float-right" @onclick="ShowModal">
+                <i class="zmdi zmdi-plus"></i>add item
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label>Current search from: <b>@searchTimeStart.ToString("MM/dd/yyyy")</b> - <b>@searchTimeEnd.ToString("MM/dd/yyyy")</b></label>
+        </div>
+    </div>
+    <div class="row pt-5">
+        @foreach (var x in Entries)
+        {
+            <div class="col-12">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                Start Time <br />
+                                <b>
+                                    @x.StartTime.ToString("hh:mm tt")
+                                </b>
+                                <br />
+                                End Time<br />
+                                <b>
+                                    @x.EndTime.ToString("hh:mm tt")
+                                </b>
+                            </div>
+                            <div class="col-4">
+                                Date <br />
+                                <b>
+                                    @x.StartTime.ToString("MM/dd/yyyy")
+                                </b><br />
+                                Details <br />
+                                <b>
+                                    @x.Details
+                                </b>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-danger pull-right" @onclick="() => Delete(x)"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-warning pull-right mr-2" @onclick="() => Update(x)"><i class="fa fa-pencil-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade @(ModalShow ? "show" : "")" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" style="display:@(ModalShow ? "block" : "none")">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediumModalLabel">Add Entry</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Date</label>
+                        <input type="date" class="form-control" @bind="newDate" />
+                    </div>
+                    <div class="col-6">
+                        <label>Start Time</label>
+                        <input type="time" class="form-control" @bind="newStart" />
+                    </div>
+                    <div class="col-6">
+                        <label>End Time</label>
+                        <input type="time" class="form-control" @bind="newEnd" />
+                    </div>
+                    <div class="col-12">
+                        <label>Details</label>
+                        <textarea class="form-control" rows="3" @bind="newDetails"></textarea>
+                    </div>
+                    <label class="w-100 text-center text-danger">@ErrorMessage</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="HideModal">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick="saveEntry">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ModalShow)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+

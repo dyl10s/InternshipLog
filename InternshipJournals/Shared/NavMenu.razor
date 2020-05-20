@@ -1,0 +1,24 @@
+﻿<!-- HEADER DESKTOP-->
+<header class="header-desktop">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="account-wrap pull-right" @onfocusout="hideDropdown">
+                <div class="account-item clearfix js-item-menu @(dropDownClicked ? "show-dropdown" : "")" @onfocusin="switchDropdown">
+                    <div class="content"> 
+                        <button class="js-acc-btn" href="#">@account.Username</button>
+                    </div>
+                    <div class="account-dropdown js-dropdown">
+                        <div class="account-dropdown__body">
+                            <div class="account-dropdown__item">
+                                <a @onclick="Logout">
+                                    <i class="zmdi zmdi-power"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- HEADER DESKTOP-->

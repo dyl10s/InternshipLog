@@ -1,0 +1,5 @@
+@media print {
+    #exportData{
+        margin: 4cm, 4cm, 4cm, 4cm
+    }
+}
